@@ -1,42 +1,7 @@
-<<<<<<< HEAD
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-=======
-# Compiled class file
+# Compiled class files
 *.class
 
-# Log file
+# Log files
 *.log
 
 # BlueJ files
@@ -54,7 +19,75 @@ build/
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
->>>>>>> fdfec1d2827d680ffde50e26f8bfebb9a628f6ed
+
+# Maven specific ignores
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Gradle specific ignores
+.gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Eclipse specific ignores
+.project
+.classpath
+.factorypath
+.settings/
+.springBeans
+.apt_generated
+.sts4-cache
+
+# IntelliJ IDEA specific ignores
+*.iml
+.idea/
+*.ipr
+*.iws
+out/
+
+# NetBeans specific ignores
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code specific ignores
+.vscode/
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# Spring Boot specific ignores
+.env
+*.env
+spring.log
+
+# Node.js specific ignores (if you have any Node.js components)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# WebSockets related
+*.websocket
+
+# Windows specific ignores
+Thumbs.db
+ehthumbs.db
