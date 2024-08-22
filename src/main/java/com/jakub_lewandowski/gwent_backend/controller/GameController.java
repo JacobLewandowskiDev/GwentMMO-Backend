@@ -11,6 +11,11 @@ public class GameController {
 //    @Autowired
 //    private final GwentWorldService gwentWorldService;
 
+    @GetMapping
+    public String getGame() {
+        return "Hello";
+    }
+
 //    @PostMapping
 //    @ResponseBody
 //    public String  createPlayer(@RequestBody Player player) {
