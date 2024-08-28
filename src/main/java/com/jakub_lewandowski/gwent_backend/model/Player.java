@@ -1,24 +1,22 @@
 package com.jakub_lewandowski.gwent_backend.model;
 
-import java.util.HashMap;
-
 public class Player {
     private long id;
     private String username;
     private int profileImg;
     private int positionX;
     private int positionY;
-    private HashMap<String, Integer> scoreboard;
+    private int wins;
+    private int losses;
 
-    public Player(long id, String username, int profileImg, int positionX, int positionY) {
+    public Player(long id, String username, int profileImg) {
         this.id = id;
         this.username = username;
         this.profileImg = profileImg;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.scoreboard = new HashMap<>(2);
-        this.scoreboard.put("wins", 0);
-        this.scoreboard.put("losses", 0);
+        this.positionX = 600;
+        this.positionY = 310;
+        this.wins = 0;
+        this.losses = 0;
     }
 
     public long getId() {
@@ -62,11 +60,19 @@ public class Player {
         this.positionY = positionY;
     }
 
-    public HashMap<String, Integer> getScoreboard() {
-        return scoreboard;
+    public int getWins() {
+        return wins;
     }
 
-    public void setScoreboard(HashMap<String, Integer> scoreboard) {
-        this.scoreboard = scoreboard;
+    public int getLosses() {
+        return losses;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public void setLosses(int losses) {
+        this.losses = losses;
     }
 }

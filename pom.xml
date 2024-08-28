@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.jakub-lewandowski</groupId>
 	<artifactId>gwent-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gwent-backend</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Spring boot backend for the GwentMMO application</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -28,8 +28,56 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<testcontainers.version>1.17.6</testcontainers.version>
+		<jooq.version>3.18.0</jooq.version>
+		<jdbc.version>6.0.13</jdbc.version>
 	</properties>
+
+<!--	<profiles>-->
+<!--		<profile>-->
+<!--			<id>dev</id>-->
+<!--			<activation>-->
+<!--				<activeByDefault>false</activeByDefault>-->
+<!--			</activation>-->
+<!--			<properties>-->
+<!--				<jdbc.driver>${env.JDBC_DRIVER}</jdbc.driver>-->
+<!--				<jdbc.url>${env.JDBC_URL}</jdbc.url>-->
+<!--				<jdbc.username>${env.JDBC_USERNAME}</jdbc.username>-->
+<!--				<jdbc.password>${env.JDBC_PASSWORD}</jdbc.password>-->
+<!--			</properties>-->
+<!--		</profile>-->
+<!--	</profiles>-->
+
 	<dependencies>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-jooq</artifactId>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.springframework</groupId>-->
+<!--			<artifactId>spring-jdbc</artifactId>-->
+<!--			<version>${jdbc.version}</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.postgresql</groupId>-->
+<!--			<artifactId>postgresql</artifactId>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.testcontainers</groupId>-->
+<!--			<artifactId>postgresql</artifactId>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>org.testcontainers</groupId>-->
+<!--			<artifactId>junit-jupiter</artifactId>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -46,12 +94,63 @@
 		</dependency>
 	</dependencies>
 
+<!--	<dependencyManagement>-->
+<!--		<dependencies>-->
+<!--			<dependency>-->
+<!--				<groupId>org.testcontainers</groupId>-->
+<!--				<artifactId>testcontainers-bom</artifactId>-->
+<!--				<version>${testcontainers.version}</version>-->
+<!--				<type>pom</type>-->
+<!--				<scope>import</scope>-->
+<!--			</dependency>-->
+<!--		</dependencies>-->
+<!--	</dependencyManagement>-->
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+<!--			<plugin>-->
+<!--				<groupId>org.jooq</groupId>-->
+<!--				<artifactId>jooq-codegen-maven</artifactId>-->
+<!--				<version>${jooq.version}</version>-->
+
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>generate-jooq</id>-->
+<!--						<phase>generate-sources</phase>-->
+<!--						<goals>-->
+<!--							<goal>generate</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+
+<!--				<configuration>-->
+
+<!--					<jdbc>-->
+<!--						<driver>${jdbc.driver}</driver>-->
+<!--						<url>${jdbc.url}</url>-->
+<!--						<user>${jdbc.username}</user>-->
+<!--						<password>${jdbc.password}</password>-->
+<!--					</jdbc>-->
+
+<!--					<generator>-->
+<!--						<database>-->
+<!--							<inputSchema>public</inputSchema>-->
+<!--						</database>-->
+
+<!--						<target>-->
+<!--							<packageName>com.jakub_lewandowski.gwent_backend.jooq</packageName>-->
+<!--							<directory>src/main/java</directory>-->
+<!--						</target>-->
+<!--					</generator>-->
+<!--				</configuration>-->
+
+<!--			</plugin>-->
 		</plugins>
+		<finalName>GwentBackend-app</finalName>
 	</build>
 </project>
