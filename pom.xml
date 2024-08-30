@@ -30,7 +30,12 @@
 		<java.version>21</java.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
 		<jooq.version>3.18.0</jooq.version>
-		<jdbc.version>6.0.13</jdbc.version>
+		<jdbc.version>6.1.12</jdbc.version>
+		<dotenv.version>5.2.2</dotenv.version>
+		<jdbc.driver>${DB_DRIVER}</jdbc.driver>
+		<jdbc.url>${DB_URL}</jdbc.url>
+		<jdbc.username>${DB_USERNAME}</jdbc.username>
+		<jdbc.password>${DB_PASSWORD}</jdbc.password>
 	</properties>
 
 <!--	<profiles>-->
@@ -40,43 +45,55 @@
 <!--				<activeByDefault>false</activeByDefault>-->
 <!--			</activation>-->
 <!--			<properties>-->
-<!--				<jdbc.driver>${env.JDBC_DRIVER}</jdbc.driver>-->
-<!--				<jdbc.url>${env.JDBC_URL}</jdbc.url>-->
-<!--				<jdbc.username>${env.JDBC_USERNAME}</jdbc.username>-->
-<!--				<jdbc.password>${env.JDBC_PASSWORD}</jdbc.password>-->
+<!--				<jdbc.driver>${DB_DRIVER}</jdbc.driver>-->
+<!--				<jdbc.url>${DB_URL}</jdbc.url>-->
+<!--				<jdbc.username>${DB_USERNAME}</jdbc.username>-->
+<!--				<jdbc.password>${DB_PASSWORD}</jdbc.password>-->
 <!--			</properties>-->
 <!--		</profile>-->
 <!--	</profiles>-->
 
 	<dependencies>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-jooq</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.springframework</groupId>-->
-<!--			<artifactId>spring-jdbc</artifactId>-->
-<!--			<version>${jdbc.version}</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>java-dotenv</artifactId>
+			<version>${dotenv.version}</version>
+		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.postgresql</groupId>-->
-<!--			<artifactId>postgresql</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${jdbc.version}</version>
+		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.testcontainers</groupId>-->
-<!--			<artifactId>postgresql</artifactId>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>6.1.12</version>
+		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.testcontainers</groupId>-->
-<!--			<artifactId>junit-jupiter</artifactId>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -94,17 +111,17 @@
 		</dependency>
 	</dependencies>
 
-<!--	<dependencyManagement>-->
-<!--		<dependencies>-->
-<!--			<dependency>-->
-<!--				<groupId>org.testcontainers</groupId>-->
-<!--				<artifactId>testcontainers-bom</artifactId>-->
-<!--				<version>${testcontainers.version}</version>-->
-<!--				<type>pom</type>-->
-<!--				<scope>import</scope>-->
-<!--			</dependency>-->
-<!--		</dependencies>-->
-<!--	</dependencyManagement>-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
@@ -113,43 +130,43 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-<!--			<plugin>-->
-<!--				<groupId>org.jooq</groupId>-->
-<!--				<artifactId>jooq-codegen-maven</artifactId>-->
-<!--				<version>${jooq.version}</version>-->
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<version>${jooq.version}</version>
 
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>generate-jooq</id>-->
-<!--						<phase>generate-sources</phase>-->
-<!--						<goals>-->
-<!--							<goal>generate</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
+				<executions>
+					<execution>
+						<id>generate-jooq</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
 
-<!--				<configuration>-->
+				<configuration>
 
-<!--					<jdbc>-->
-<!--						<driver>${jdbc.driver}</driver>-->
-<!--						<url>${jdbc.url}</url>-->
-<!--						<user>${jdbc.username}</user>-->
-<!--						<password>${jdbc.password}</password>-->
-<!--					</jdbc>-->
+					<jdbc>
+						<driver>${DB_DRIVER}</driver>
+						<url>${DB_URL}</url>
+						<user>${DB_USERNAME}</user>
+						<password>${DB_PASSWORD}</password>
+					</jdbc>
 
-<!--					<generator>-->
-<!--						<database>-->
-<!--							<inputSchema>public</inputSchema>-->
-<!--						</database>-->
+					<generator>
+						<database>
+							<inputSchema>public</inputSchema>
+						</database>
 
-<!--						<target>-->
-<!--							<packageName>com.jakub_lewandowski.gwent_backend.jooq</packageName>-->
-<!--							<directory>src/main/java</directory>-->
-<!--						</target>-->
-<!--					</generator>-->
-<!--				</configuration>-->
+						<target>
+							<packageName>com.jakub_lewandowski.gwent_backend.jooq</packageName>
+							<directory>src/main/java</directory>
+						</target>
+					</generator>
+				</configuration>
 
-<!--			</plugin>-->
+			</plugin>
 		</plugins>
 		<finalName>GwentBackend-app</finalName>
 	</build>

@@ -1,18 +1,20 @@
 package com.jakub_lewandowski.gwent_backend.model;
 
+
+
 public class Player {
     private long id;
     private String username;
-    private int profileImg;
+    private int sprite;
     private int positionX;
     private int positionY;
     private int wins;
     private int losses;
 
-    public Player(long id, String username, int profileImg) {
+    public Player(long id, String username, int sprite) {
         this.id = id;
         this.username = username;
-        this.profileImg = profileImg;
+        this.sprite = sprite;
         this.positionX = 600;
         this.positionY = 310;
         this.wins = 0;
@@ -23,25 +25,16 @@ public class Player {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }
-
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public int getProfileImg() {
-        return profileImg;
-    }
-
-    public void setProfileImg(int profileImg) {
-        this.profileImg = profileImg;
+    public int getSprite() {
+        return sprite;
     }
 
     public int getPositionX() {

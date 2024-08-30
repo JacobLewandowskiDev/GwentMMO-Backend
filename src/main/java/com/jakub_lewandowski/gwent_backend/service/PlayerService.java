@@ -16,7 +16,7 @@ public class PlayerService {
 //    }
 
     public long createPlayer(Player player) {
-        System.out.println("createPlayer() called: " + player.getUsername() + ", profileImg: " + player.getProfileImg() + ", x: " + player.getPositionX() + ", y:" + player.getPositionY());
+        System.out.println("createPlayer() called: " + player.getUsername() + ", profileImg: " + player.getSprite() + ", x: " + player.getPositionX() + ", y:" + player.getPositionY());
         return 1L;
     }
 }

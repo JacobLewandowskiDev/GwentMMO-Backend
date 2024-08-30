@@ -76,6 +76,8 @@ Thumbs.db
 ehthumbs.db
 
 # Spring Boot specific ignores
+src/main/resources/secrets.properties
+secrets.properties
 .env
 *.env
 spring.log
