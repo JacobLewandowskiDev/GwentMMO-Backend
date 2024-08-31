@@ -31,38 +31,31 @@
 		<testcontainers.version>1.17.6</testcontainers.version>
 		<jooq.version>3.18.0</jooq.version>
 		<jdbc.version>6.1.12</jdbc.version>
-		<dotenv.version>5.2.2</dotenv.version>
-		<jdbc.driver>${DB_DRIVER}</jdbc.driver>
-		<jdbc.url>${DB_URL}</jdbc.url>
-		<jdbc.username>${DB_USERNAME}</jdbc.username>
-		<jdbc.password>${DB_PASSWORD}</jdbc.password>
+		<jdbc.driver>${env.JDBC_DRIVER}</jdbc.driver>
+		<jdbc.url>${env.DB_URL}</jdbc.url>
+		<jdbc.username>${env.JDBC_USERNAME}</jdbc.username>
+		<jdbc.password>${env.JDBC_PASSWORD}</jdbc.password>
 	</properties>
 
-<!--	<profiles>-->
-<!--		<profile>-->
-<!--			<id>dev</id>-->
-<!--			<activation>-->
-<!--				<activeByDefault>false</activeByDefault>-->
-<!--			</activation>-->
-<!--			<properties>-->
-<!--				<jdbc.driver>${DB_DRIVER}</jdbc.driver>-->
-<!--				<jdbc.url>${DB_URL}</jdbc.url>-->
-<!--				<jdbc.username>${DB_USERNAME}</jdbc.username>-->
-<!--				<jdbc.password>${DB_PASSWORD}</jdbc.password>-->
-<!--			</properties>-->
-<!--		</profile>-->
-<!--	</profiles>-->
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<jdbc.driver>${jdbc.driver}</jdbc.driver>
+				<jdbc.url>${jdbc.url}</jdbc.url>
+				<jdbc.username>${jdbc.username}</jdbc.username>
+				<jdbc.password>${jdbc.password}</jdbc.password>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jooq</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.github.cdimascio</groupId>
-			<artifactId>java-dotenv</artifactId>
-			<version>${dotenv.version}</version>
 		</dependency>
 
 		<dependency>
@@ -148,10 +141,10 @@
 				<configuration>
 
 					<jdbc>
-						<driver>${DB_DRIVER}</driver>
-						<url>${DB_URL}</url>
-						<user>${DB_USERNAME}</user>
-						<password>${DB_PASSWORD}</password>
+						<driver>${jdbc.driver}</driver>
+						<url>${jdbc.url}</url>
+						<user>${jdbc.username}</user>
+						<password>${jdbc.password}</password>
 					</jdbc>
 
 					<generator>
