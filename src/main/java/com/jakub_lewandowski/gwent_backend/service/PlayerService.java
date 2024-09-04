@@ -8,15 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlayerService {
 
-//@Autowired
-//    private final PlayerRepository playerRepository;
-//
-//    public PlayerService(PlayerRepository playerRepository) {
-//        this.playerRepository = playerRepository;
-//    }
+@Autowired
+    private final PlayerRepository playerRepository;
+
+    public PlayerService(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
+    }
 
     public long createPlayer(Player player) {
-        System.out.println("createPlayer() called: " + player.getUsername() + ", profileImg: " + player.getSprite() + ", x: " + player.getPositionX() + ", y:" + player.getPositionY());
-        return 1L;
+        return playerRepository.createPlayer(player);
     }
 }

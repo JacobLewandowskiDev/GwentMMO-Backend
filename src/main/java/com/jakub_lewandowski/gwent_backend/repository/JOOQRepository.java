@@ -1,5 +1,8 @@
 package com.jakub_lewandowski.gwent_backend.repository;
 
+import static com.jakub_lewandowski.gwent_backend.jooq.tables.Players.PLAYERS;
+
+import com.jakub_lewandowski.gwent_backend.jooq.tables.records.PlayersRecord;
 import com.jakub_lewandowski.gwent_backend.model.Player;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -23,18 +26,17 @@ public class JOOQRepository implements PlayerRepository {
 
     @Override
     public long createPlayer(Player player) {
-//        Player createdPlayer = context.insertInto(PLAYERS)
-//                .set(PLAYER.USERNAME, player.getUsername())
-//                .set(PLAYER.SPRITE, player.getSprite())
-//                .set(PLAYER.WINS, player.getWins())
-//                .set(PLAYER.LOSSES, player.getLosses())
-//                .set(PLAYER.LOSSES, player.getLosses())
-//                .set(PLAYER.POS_X, player.getPositionX())
-//                .set(PLAYER.POS_Y, player.getPositionY())
-//                .returning()
-//                .fetchOne();
-//        return createdPlayer.getId();
-        return 1;
+        PlayersRecord createdPlayerRecord = context.insertInto(PLAYERS)
+                .set(PLAYERS.USERNAME, player.getUsername())
+                .set(PLAYERS.SPRITE, player.getSprite())
+                .set(PLAYERS.WINS, player.getWins())
+                .set(PLAYERS.LOSSES, player.getLosses())
+                .set(PLAYERS.LOSSES, player.getLosses())
+                .set(PLAYERS.X_POS, player.getPositionX())
+                .set(PLAYERS.Y_POS, player.getPositionY())
+                .returning()
+                .fetchOne();
+        return createdPlayerRecord.getId();
     }
 
     @Override
