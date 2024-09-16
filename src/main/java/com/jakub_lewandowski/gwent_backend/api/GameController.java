@@ -3,7 +3,6 @@ package com.jakub_lewandowski.gwent_backend.api;
 import com.jakub_lewandowski.gwent_backend.model.Player;
 import com.jakub_lewandowski.gwent_backend.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Player> startGame(@PathVariable("id") long id) {
+    public Optional<Player> getPlayerById(@PathVariable("id") long id) {
         return playerService.startGame(id);
     }
 

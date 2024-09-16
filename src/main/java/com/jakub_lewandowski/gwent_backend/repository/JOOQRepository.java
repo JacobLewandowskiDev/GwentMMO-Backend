@@ -35,7 +35,7 @@ public class JOOQRepository implements PlayerRepository {
     }
 
     @Override
-    public long createPlayer(Player player) {
+    public Optional<Player> createPlayer(Player player) {
         var playerExists = context.select()
                 .from(PLAYERS)
                 .where(PLAYERS.USERNAME.equalIgnoreCase(player.getUsername()))
@@ -54,7 +54,8 @@ public class JOOQRepository implements PlayerRepository {
                 .fetchOne();
 
         if (createdPlayerRecord != null) {
-            return createdPlayerRecord.getId();
+            Player createdPlayer = mapRecordToPlayer(createdPlayerRecord);
+            return Optional.of(createdPlayer);
         } else {
             throw new IllegalStateException("Failed to create player");
         }

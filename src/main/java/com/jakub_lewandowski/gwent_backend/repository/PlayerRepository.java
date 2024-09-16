@@ -11,7 +11,7 @@ public interface PlayerRepository {
 
     // Single player related methods:
     Optional<Player> findPlayerById(long playerId);
-    long createPlayer(Player player);
+    Optional<Player> createPlayer(Player player);
     Optional<Player> deletePlayer(long playerId);
     void updatePlayer(long playerId,Player player);
 
