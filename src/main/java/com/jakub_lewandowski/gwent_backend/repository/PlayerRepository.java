@@ -17,6 +17,6 @@ public interface PlayerRepository {
 
 
     // Methods regarding multiple players:
-    List<Player> findAllPlayers();
+    List<Player> getAllPlayers();
     void deleteAllPlayer();
 }

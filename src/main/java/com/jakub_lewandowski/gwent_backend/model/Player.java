@@ -1,7 +1,5 @@
 package com.jakub_lewandowski.gwent_backend.model;
 
-
-
 public class Player {
     private long id;
     private String username;
@@ -11,14 +9,26 @@ public class Player {
     private int wins;
     private int losses;
 
-    public Player(long id, String username, int sprite) {
-        this.id = id;
+    public Player() {
+    }
+
+    public Player(String username, int sprite) {
         this.username = username;
         this.sprite = sprite;
         this.positionX = 600;
         this.positionY = 310;
         this.wins = 0;
         this.losses = 0;
+    }
+
+    public Player(long id, String username, int sprite, int positionX, int positionY, int wins, int losses) {
+        this.id = id;
+        this.username = username;
+        this.sprite = sprite;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.wins = wins;
+        this.losses = losses;
     }
 
     public long getId() {

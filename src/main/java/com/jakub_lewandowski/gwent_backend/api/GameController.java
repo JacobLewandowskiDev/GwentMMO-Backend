@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,6 +20,11 @@ public class GameController {
         this.playerService = playerService;
     }
 
+    @GetMapping
+    public List<Player> getAllPlayers() {
+        return playerService.getAllPlayers();
+    }
+
     @GetMapping("/{id}")
     public Optional<Player> getPlayerById(@PathVariable("id") long id) {
         return playerService.startGame(id);
@@ -29,5 +35,4 @@ public class GameController {
     public ResponseEntity<?> createPlayer(@RequestBody Player player) {
         return playerService.createPlayer(player);
     }
-
 }

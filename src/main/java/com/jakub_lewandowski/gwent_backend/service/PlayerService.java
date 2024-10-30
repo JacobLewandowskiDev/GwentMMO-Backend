@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +35,10 @@ public class PlayerService {
     public Optional<Player> startGame(long playerId) {
         System.out.println("startGame() method called, attempting to start game...");
         return playerRepository.findPlayerById(playerId);
+    }
+
+    public List<Player> getAllPlayers() {
+        System.out.println("getAllPLayers() called");
+        return playerRepository.getAllPlayers();
     }
 }

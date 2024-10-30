@@ -6,12 +6,13 @@ import com.jakub_lewandowski.gwent_backend.jooq.tables.records.PlayersRecord;
 import com.jakub_lewandowski.gwent_backend.model.Player;
 import com.jakub_lewandowski.gwent_backend.model.ValidationException;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class JOOQRepository implements PlayerRepository {
@@ -20,6 +21,25 @@ public class JOOQRepository implements PlayerRepository {
 
     public JOOQRepository(DSLContext context) {
         this.context = context;
+    }
+
+    @Override
+    public List<Player> getAllPlayers() {
+        List<Record> result = context.select()
+                .from(PLAYERS)
+                .fetch();
+
+        return result.stream()
+                .map(record -> new Player(
+                        record.get((PLAYERS.ID)),
+                        record.get(PLAYERS.USERNAME),
+                        record.get((PLAYERS.SPRITE)),
+                        record.get(PLAYERS.X_POS),
+                        record.get(PLAYERS.Y_POS),
+                        record.get((PLAYERS.WINS)),
+                        record.get(PLAYERS.LOSSES)
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -72,10 +92,6 @@ public class JOOQRepository implements PlayerRepository {
 
     }
 
-    @Override
-    public List<Player> findAllPlayers() {
-        return null;
-    }
 
     @Override
     public void deleteAllPlayer() {
@@ -83,7 +99,9 @@ public class JOOQRepository implements PlayerRepository {
     }
 
     private Player mapRecordToPlayer(PlayersRecord playersRecord) {
-        Player player = new Player(playersRecord.getId(), playersRecord.getUsername(), playersRecord.getSprite());
+        Player player = new Player(
+        playersRecord.getUsername(),
+        playersRecord.getSprite());
         player.setWins(playersRecord.getWins());
         player.setLosses(playersRecord.getLosses());
         player.setPositionX(playersRecord.getXPos());
