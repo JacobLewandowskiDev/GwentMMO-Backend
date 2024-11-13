@@ -63,18 +63,20 @@ public class JOOQRepository implements PlayerRepository {
         if (playerExists != null) {
             throw new ValidationException("Status code:" + HttpStatus.CONFLICT.value() + ", Player under the username: '" + player.getUsername() + "' Already exists.");
         }
-        PlayersRecord createdPlayerRecord = context.insertInto(PLAYERS)
-                .set(PLAYERS.USERNAME, player.getUsername())
-                .set(PLAYERS.SPRITE, player.getSprite())
-                .set(PLAYERS.WINS, player.getWins())
-                .set(PLAYERS.LOSSES, player.getLosses())
-                .set(PLAYERS.X_POS, player.getPositionX())
-                .set(PLAYERS.Y_POS, player.getPositionY())
+        Player newPlayer = new Player(player.getUsername(), player.getSprite());
+
+        PlayersRecord playerRecord = context.insertInto(PLAYERS)
+                .set(PLAYERS.USERNAME, newPlayer.getUsername())
+                .set(PLAYERS.SPRITE, newPlayer.getSprite())
+                .set(PLAYERS.WINS, newPlayer.getWins())
+                .set(PLAYERS.LOSSES, newPlayer.getLosses())
+                .set(PLAYERS.X_POS, newPlayer.getPositionX())
+                .set(PLAYERS.Y_POS, newPlayer.getPositionY())
                 .returning()
                 .fetchOne();
 
-        if (createdPlayerRecord != null) {
-            Player createdPlayer = mapRecordToPlayer(createdPlayerRecord);
+        if (playerRecord != null) {
+            Player createdPlayer = mapRecordToPlayer(playerRecord);
             return Optional.of(createdPlayer);
         } else {
             throw new IllegalStateException("Failed to create player");
@@ -92,20 +94,21 @@ public class JOOQRepository implements PlayerRepository {
 
     }
 
-
     @Override
     public void deleteAllPlayer() {
 
     }
 
+
     private Player mapRecordToPlayer(PlayersRecord playersRecord) {
-        Player player = new Player(
-        playersRecord.getUsername(),
-        playersRecord.getSprite());
-        player.setWins(playersRecord.getWins());
-        player.setLosses(playersRecord.getLosses());
-        player.setPositionX(playersRecord.getXPos());
-        player.setPositionY(playersRecord.getYPos());
-        return player;
+        return new Player(
+                playersRecord.getId(),
+                playersRecord.getUsername(),
+                playersRecord.getSprite(),
+                playersRecord.getXPos(),
+                playersRecord.getYPos(),
+                playersRecord.getWins(),
+                playersRecord.getLosses()
+        );
     }
 }

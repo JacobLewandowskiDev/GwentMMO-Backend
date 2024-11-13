@@ -9,9 +9,9 @@ public class Player {
     private int wins;
     private int losses;
 
-    public Player() {
-    }
+    public Player() {}
 
+    // Used to create a default player object (default starting location and W/L ratio)
     public Player(String username, int sprite) {
         this.username = username;
         this.sprite = sprite;
@@ -21,6 +21,7 @@ public class Player {
         this.losses = 0;
     }
 
+    // Used to create player objects from the database
     public Player(long id, String username, int sprite, int positionX, int positionY, int wins, int losses) {
         this.id = id;
         this.username = username;
