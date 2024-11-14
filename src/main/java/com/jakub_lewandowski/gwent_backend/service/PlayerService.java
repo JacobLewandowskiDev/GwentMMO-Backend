@@ -33,7 +33,7 @@ public class PlayerService {
 
     // Open a websocket connection for player and start the game.
     public Optional<Player> getPlayerbyId(long playerId) {
-        System.out.println("startGame() method called, attempting to start game...");
+        System.out.println("getPlayerById() method called");
         return playerRepository.findPlayerById(playerId);
     }
 
