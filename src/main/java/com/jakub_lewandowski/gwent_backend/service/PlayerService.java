@@ -2,6 +2,7 @@ package com.jakub_lewandowski.gwent_backend.service;
 
 import com.jakub_lewandowski.gwent_backend.model.Player;
 import com.jakub_lewandowski.gwent_backend.model.ValidationException;
+import com.jakub_lewandowski.gwent_backend.model.WebSocketHandshakeInterceptor;
 import com.jakub_lewandowski.gwent_backend.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,11 @@ public class PlayerService {
 
     // Attempt to create player in DB, and validate if username exists.
     public ResponseEntity<?> createPlayer(Player player) {
-        System.out.println("createPlayer() method called, creating new Player.");
+        if(WebSocketHandshakeInterceptor.getActiveConnections()) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Maximum number of players on the server has been reached 10/10. Please try again later.");
+        }
         try{
+            System.out.println("createPlayer() method called.");
             return ResponseEntity.status(HttpStatus.CREATED).body(playerRepository.createPlayer(player));
         } catch (ValidationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
