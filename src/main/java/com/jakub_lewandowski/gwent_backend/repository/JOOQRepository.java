@@ -85,13 +85,16 @@ public class JOOQRepository implements PlayerRepository {
 
 
     @Override
-    public Optional<Player> deletePlayer(long playerId) {
-        return Optional.empty();
+    public void deletePlayer(long playerId) {
+        context.deleteFrom(PLAYERS)
+                .where(PLAYERS.ID.eq(playerId))
+                .execute();
+        System.out.println("Deleted player from DB: " + playerId);
     }
 
     @Override
-    public void updatePlayer(long playerId, Player player) {
-
+    public Optional<Player> updatePlayer(long playerId, Player player) {
+        return null;
     }
 
     @Override

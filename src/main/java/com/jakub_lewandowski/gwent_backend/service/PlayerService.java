@@ -45,4 +45,9 @@ public class PlayerService {
         System.out.println("getAllPLayers() called");
         return playerRepository.getAllPlayers();
     }
+
+    public void deletePlayer(long playerId) {
+        System.out.println("deletePlayer() called for: " + playerId);
+        playerRepository.deletePlayer(playerId);
+    }
 }

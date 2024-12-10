@@ -17,29 +17,21 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         int currentConnections = activeConnections.get();
-        System.out.println("WebSocket connection attempt from " + request.getRemoteAddress());
+        System.out.println("WebSocket connection attempt from: " + request.getRemoteAddress());
 
         if (currentConnections >= MAX_CONNECTIONS) {
-            System.out.println("Connection rejected: Too many active players on the server (" + currentConnections + ").");
+            System.out.println("Connection rejected: Too many active players on the server [" + currentConnections + "].");
             response.setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
             return false;
         }
 
-        System.out.println("Connection established: " + (currentConnections + 1) + "/" + MAX_CONNECTIONS);
         activeConnections.incrementAndGet();
         return true;
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
-        System.out.println("WebSocket connection established");
-    }
-
-
-    // To be implemented upon disconnection
-    public static void onConnectionClosed() {
-        int remainingConnections = activeConnections.decrementAndGet();
-        System.out.println("WebSocket connection closed. Remaining connections: " + remainingConnections);
+        System.out.println("WebSocket connection established, current player count: " + activeConnections.get() + "/" + MAX_CONNECTIONS);
     }
 
     public static boolean getActiveConnections() {
