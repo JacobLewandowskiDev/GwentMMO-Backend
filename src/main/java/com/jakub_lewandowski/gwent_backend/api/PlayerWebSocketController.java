@@ -2,7 +2,6 @@ package com.jakub_lewandowski.gwent_backend.api;
 
 import com.jakub_lewandowski.gwent_backend.model.MovementUpdate;
 import com.jakub_lewandowski.gwent_backend.model.PlayerDisconnectMessage;
-import com.jakub_lewandowski.gwent_backend.model.PlayerWebSocketHandler;
 import com.jakub_lewandowski.gwent_backend.service.PlayerService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -30,13 +29,10 @@ public class PlayerWebSocketController {
     @MessageMapping("/player-disconnect")
     public void handlePlayerDisconnect(@Payload PlayerDisconnectMessage message) {
         try {
-            long playerId = Long.parseLong(message.getId()); // Convert String to long
-            System.out.println("Player disconnected: " + playerId);
-
-            PlayerWebSocketHandler.closeConnection(playerId);
+            long playerId = Long.parseLong(message.getPlayerId()); // Convert String to long
             playerService.deletePlayer(playerId);
         } catch (NumberFormatException e) {
-            System.err.println("Invalid player ID format: " + message.getId());
+            System.err.println("PlayerWebSocketController: Invalid player ID format: " + message.getPlayerId());
         } catch (Exception e) {
             e.printStackTrace();
         }

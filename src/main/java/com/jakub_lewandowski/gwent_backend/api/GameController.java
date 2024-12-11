@@ -27,7 +27,7 @@ public class GameController {
 
     @GetMapping("/{id}")
     public Optional<Player> getPlayerById(@PathVariable("id") long id) {
-        return playerService.getPlayerbyId(id);
+        return playerService.getPlayerById(id);
     }
 
     @PostMapping

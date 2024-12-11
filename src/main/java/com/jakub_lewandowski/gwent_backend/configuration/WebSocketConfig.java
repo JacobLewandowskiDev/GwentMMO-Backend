@@ -1,6 +1,5 @@
 package com.jakub_lewandowski.gwent_backend.configuration;
 
-import com.jakub_lewandowski.gwent_backend.model.PlayerWebSocketHandler;
 import com.jakub_lewandowski.gwent_backend.model.WebSocketHandshakeInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

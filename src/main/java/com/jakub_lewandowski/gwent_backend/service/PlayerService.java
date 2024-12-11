@@ -2,7 +2,7 @@ package com.jakub_lewandowski.gwent_backend.service;
 
 import com.jakub_lewandowski.gwent_backend.model.Player;
 import com.jakub_lewandowski.gwent_backend.model.ValidationException;
-import com.jakub_lewandowski.gwent_backend.model.WebSocketHandshakeInterceptor;
+import com.jakub_lewandowski.gwent_backend.model.WebSocketEventListener;
 import com.jakub_lewandowski.gwent_backend.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,32 +22,31 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    // Attempt to create player in DB, and validate if username exists.
     public ResponseEntity<?> createPlayer(Player player) {
-        if(WebSocketHandshakeInterceptor.getActiveConnections()) {
-            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Maximum number of players on the server has been reached 10/10. Please try again later.");
+        System.out.println("createPlayer() method called.");
+        if(WebSocketEventListener.currentPlayerCount()) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Connection rejected: The Server has reached the Maximum active player count.");
         }
         try{
-            System.out.println("createPlayer() method called.");
             return ResponseEntity.status(HttpStatus.CREATED).body(playerRepository.createPlayer(player));
         } catch (ValidationException e) {
+            System.out.println("Error occurred while creating a new Player: [" + e.getMessage() + "]");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
-    // Open a websocket connection for player and start the game.
-    public Optional<Player> getPlayerbyId(long playerId) {
-        System.out.println("getPlayerById() method called");
+    public Optional<Player> getPlayerById(long playerId) {
+        System.out.println("getPlayerById() method called for: [" + playerId + "]");
         return playerRepository.findPlayerById(playerId);
     }
 
     public List<Player> getAllPlayers() {
-        System.out.println("getAllPLayers() called");
+        System.out.println("getAllPLayers() method called");
         return playerRepository.getAllPlayers();
     }
 
     public void deletePlayer(long playerId) {
-        System.out.println("deletePlayer() called for: " + playerId);
+        System.out.println("deletePlayer() method called for: [" + playerId + "]");
         playerRepository.deletePlayer(playerId);
     }
 }

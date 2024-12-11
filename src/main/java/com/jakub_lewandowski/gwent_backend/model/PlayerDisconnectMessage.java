@@ -1,10 +1,9 @@
 package com.jakub_lewandowski.gwent_backend.model;
 
 public class PlayerDisconnectMessage {
-    private String id;
+    private String playerId;
 
-    // Getters and setters
-    public String getId() {
-        return id;
+    public String getPlayerId() {
+        return playerId;
     }
 }

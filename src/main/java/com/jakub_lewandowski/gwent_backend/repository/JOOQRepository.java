@@ -89,7 +89,7 @@ public class JOOQRepository implements PlayerRepository {
         context.deleteFrom(PLAYERS)
                 .where(PLAYERS.ID.eq(playerId))
                 .execute();
-        System.out.println("Deleted player from DB: " + playerId);
+        System.out.println("Player [" + playerId + "] was deleted from the DB.");
     }
 
     @Override
@@ -99,7 +99,8 @@ public class JOOQRepository implements PlayerRepository {
 
     @Override
     public void deleteAllPlayer() {
-
+        context.deleteFrom(PLAYERS).execute();
+        System.out.println("Player table cleared.");
     }
 
 
