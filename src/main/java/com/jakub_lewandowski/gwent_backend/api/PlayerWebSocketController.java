@@ -20,9 +20,10 @@ public class PlayerWebSocketController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @MessageMapping("/move")
+    @MessageMapping("/player-move")
     @SendTo("/topic/movement")
-    public MovementUpdate broadcastMovement(MovementUpdate movementUpdate) {
+    public MovementUpdate handlePlayerMovement(MovementUpdate movementUpdate) {
+        System.out.println("Player has moved " + movementUpdate.getPlayerId() + ", x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
         return movementUpdate;
     }
 
