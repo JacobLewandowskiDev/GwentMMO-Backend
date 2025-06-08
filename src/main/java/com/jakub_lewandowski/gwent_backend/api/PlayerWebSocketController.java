@@ -23,7 +23,7 @@ public class PlayerWebSocketController {
     @MessageMapping("/player-move")
     @SendTo("/topic/movement")
     public MovementUpdate handlePlayerMovement(MovementUpdate movementUpdate) {
-        System.out.println("Player has moved " + movementUpdate.getPlayerId() + ", x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
+        System.out.println("Player [" + movementUpdate.getPlayerId() + "] has moved; x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
         return movementUpdate;
     }
 
