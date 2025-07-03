@@ -24,6 +24,7 @@ public class PlayerWebSocketController {
     @SendTo("/topic/movement")
     public MovementUpdate handlePlayerMovement(MovementUpdate movementUpdate) {
         System.out.println("Player [" + movementUpdate.getPlayerId() + "] has moved; x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
+        this.playerService.updatePlayerPosition(movementUpdate);
         return movementUpdate;
     }
 

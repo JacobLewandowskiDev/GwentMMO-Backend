@@ -1,5 +1,6 @@
 package com.jakub_lewandowski.gwent_backend.service;
 
+import com.jakub_lewandowski.gwent_backend.model.MovementUpdate;
 import com.jakub_lewandowski.gwent_backend.model.Player;
 import com.jakub_lewandowski.gwent_backend.model.ValidationException;
 import com.jakub_lewandowski.gwent_backend.model.WebSocketEventListener;
@@ -48,5 +49,9 @@ public class PlayerService {
     public void deletePlayer(long playerId) {
         System.out.println("deletePlayer() method called for: [" + playerId + "]");
         playerRepository.deletePlayer(playerId);
+    }
+
+    public void updatePlayerPosition(MovementUpdate movementUpdate) {
+        System.out.println("Update for id[" + movementUpdate.getPlayerId() + "] recieved, new position is x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
     }
 }
