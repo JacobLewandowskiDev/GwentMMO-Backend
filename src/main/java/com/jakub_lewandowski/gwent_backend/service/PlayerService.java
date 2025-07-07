@@ -52,6 +52,6 @@ public class PlayerService {
     }
 
     public void updatePlayerPosition(MovementUpdate movementUpdate) {
-        System.out.println("Update for id[" + movementUpdate.getPlayerId() + "] recieved, new position is x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
+        System.out.println("Player [" + movementUpdate.getPlayerId() + "] has moved; x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
     }
 }
