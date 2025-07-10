@@ -46,7 +46,6 @@ public class GameController {
                 System.out.println("Optional is empty or does not contain a Player");
             }
         }
-
         return response;
     }
 }

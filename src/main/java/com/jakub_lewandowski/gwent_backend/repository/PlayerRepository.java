@@ -15,7 +15,6 @@ public interface PlayerRepository {
     void deletePlayer(long playerId);
     Optional<Player> updatePlayer(long playerId,Player player);
 
-
     // Methods regarding multiple players:
     List<Player> getAllPlayers();
     void deleteAllPlayer();
