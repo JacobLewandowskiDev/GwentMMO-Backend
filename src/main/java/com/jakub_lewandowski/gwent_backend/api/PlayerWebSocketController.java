@@ -9,6 +9,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
+import java.util.Map;
+
 @Controller
 public class PlayerWebSocketController {
 
@@ -32,6 +34,10 @@ public class PlayerWebSocketController {
         try {
             long playerId = Long.parseLong(message.getPlayerId()); // Convert String to long
             playerService.deletePlayer(playerId);
+            messagingTemplate.convertAndSend("/topic/player-updates", Map.of(
+                    "action", "disconnect",
+                    "playerId", playerId
+            ));
         } catch (NumberFormatException e) {
             System.err.println("PlayerWebSocketController: Invalid player ID format: " + message.getPlayerId());
         } catch (Exception e) {
