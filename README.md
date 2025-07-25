@@ -40,10 +40,10 @@ Make sure you have the following installed on your machine:
 
   4. Run the Application
 
-# API Documentation
+## API Documentation
 The backend provides a RESTful API, which allows users to interact with eachother during their gameplay. 
 You can find the API endpoints documented within the code or by using tools like Postman to test the endpoints.
 
-# Front-end portion of the Application
+## Front-end portion of the Application
 This is merely the backend portion of the project. In order to see the codebase for the frontend of the application please follow the link below to the front-end repository:
 https://github.com/JacobLewandowskiDev/GwentMMO-front
