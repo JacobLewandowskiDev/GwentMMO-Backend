@@ -52,6 +52,13 @@ public class PlayerService {
     }
 
     public void updatePlayerPosition(MovementUpdate movementUpdate) {
-        System.out.println("Player [" + movementUpdate.getPlayerId() + "] has moved; x: " + movementUpdate.getPlayerPositionX() + ", y: " + movementUpdate.getPlayerPositionY());
+        Player player = playerRepository.findPlayerById(movementUpdate.getPlayerId()).orElse(null);
+        if (player != null) {
+            player.setPositionX(movementUpdate.getPlayerPositionX());
+            player.setPositionY(movementUpdate.getPlayerPositionY());
+            System.out.println("Updated position for player " + player.getUsername() + " x: " + player.getPositionX() + ", y: " + player.getPositionY());
+        } else {
+            System.out.println("Player with ID " + movementUpdate.getPlayerId() + " not found.");
+        }
     }
 }
