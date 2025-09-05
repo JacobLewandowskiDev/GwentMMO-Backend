@@ -34,7 +34,7 @@ public class PlayerWebSocketController {
         try {
             long playerId = Long.parseLong(message.getPlayerId()); // Convert String to long
             playerService.deletePlayer(playerId);
-            messagingTemplate.convertAndSend("/topic/player-updates", Map.of(
+            messagingTemplate.convertAndSend("/topic/player-disconnect", Map.of(
                     "action", "disconnect",
                     "playerId", playerId
             ));
