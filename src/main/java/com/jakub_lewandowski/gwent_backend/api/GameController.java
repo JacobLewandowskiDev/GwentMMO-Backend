@@ -44,9 +44,8 @@ public class GameController {
         if (response.getStatusCode() == HttpStatus.CREATED && response.getBody() instanceof Optional<?> optionalBody) {
 
             if (optionalBody.isPresent() && optionalBody.get() instanceof Player createdPlayer) {
-                // Send a structured WebSocket message about new player connection
                 Map<String, Object> payload = new HashMap<>();
-                payload.put("type", "connect"); // You can use "type" or "action" — just stay consistent
+                payload.put("type", "connect");
                 payload.put("player", createdPlayer);
 
                 messagingTemplate.convertAndSend("/topic/player-updates", payload);

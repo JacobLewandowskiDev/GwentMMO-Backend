@@ -59,30 +59,24 @@ public class PlayerService {
 
     @Transactional
     public void updatePlayerPosition(MovementUpdate movementUpdate) {
-        System.out.println("Testing to see playerId: [" + movementUpdate.getPlayerId() + "]");
         long now = System.currentTimeMillis();
         Long lastSaved = lastSavedTimestamps.get(movementUpdate.getPlayerId());
 
-        // Skip if last save was too recent
         if (lastSaved != null && (now - lastSaved) < SAVE_INTERVAL_MS) {
             return;
         }
 
-        // Fetch the player from the repository (now correctly returns id)
         Optional<Player> optionalPlayer = playerRepository.findPlayerById(movementUpdate.getPlayerId());
 
         if (optionalPlayer.isPresent()) {
             Player player = optionalPlayer.get();
 
-            // Update the position locally
             player.setPositionX(movementUpdate.getPlayerPositionX());
             player.setPositionY(movementUpdate.getPlayerPositionY());
 
-            // Persist the new position
             Optional<Player> updatedPlayer = playerRepository.updatePlayerPosition(player.getId(), player);
 
             if (updatedPlayer.isPresent()) {
-                // Successfully updated
                 lastSavedTimestamps.put(movementUpdate.getPlayerId(), now);
                 player = updatedPlayer.get(); // get the latest record
                 System.out.println("Saved position for player " + player.getUsername() +

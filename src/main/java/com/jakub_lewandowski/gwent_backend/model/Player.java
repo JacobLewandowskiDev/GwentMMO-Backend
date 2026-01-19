@@ -11,7 +11,7 @@ public class Player {
 
     public Player() {}
 
-    // Used to create a default player object (default starting location and W/L ratio)
+    // Used to create a default player object (default starting location and Win/Loss ratio)
     public Player(String username, int sprite) {
         this.username = username;
         this.sprite = sprite;

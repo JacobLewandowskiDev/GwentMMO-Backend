@@ -37,7 +37,7 @@ public class PlayerWebSocketController {
     @MessageMapping("/player-disconnect")
     public void handlePlayerDisconnect(@Payload PlayerDisconnectMessage message) {
         try {
-            long playerId = Long.parseLong(message.getPlayerId()); // Convert String to long
+            long playerId = Long.parseLong(message.getPlayerId());
             playerService.deletePlayer(playerId);
             messagingTemplate.convertAndSend("/topic/player-disconnect", Map.of(
                     "action", "disconnect",
