@@ -23,7 +23,7 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
 
     private final Map<Long, Long> lastSavedTimestamps = new ConcurrentHashMap<>();
-    private final long SAVE_INTERVAL_MS = 5000; // save at most once every 5 seconds
+    private final long SAVE_INTERVAL_MS = 2000; // save at most once every 5 seconds
 
     public PlayerService(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
