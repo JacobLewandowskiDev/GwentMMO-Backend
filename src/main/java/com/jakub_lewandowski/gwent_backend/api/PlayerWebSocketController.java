@@ -29,6 +29,11 @@ public class PlayerWebSocketController {
         return movementUpdate;
     }
 
+    @MessageMapping("/player-stopped")
+    public void handlePlayerStopped(MovementUpdate movementUpdate) {
+        playerService.updatePlayerPosition(movementUpdate);
+    }
+
     @MessageMapping("/player-disconnect")
     public void handlePlayerDisconnect(@Payload PlayerDisconnectMessage message) {
         try {

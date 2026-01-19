@@ -9,15 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class PlayerService {
 
     @Autowired
     private final PlayerRepository playerRepository;
+
+    private final Map<Long, Long> lastSavedTimestamps = new ConcurrentHashMap<>();
+    private final long SAVE_INTERVAL_MS = 5000; // save at most once every 5 seconds
 
     public PlayerService(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
@@ -51,12 +57,41 @@ public class PlayerService {
         playerRepository.deletePlayer(playerId);
     }
 
+    @Transactional
     public void updatePlayerPosition(MovementUpdate movementUpdate) {
-        Player player = playerRepository.findPlayerById(movementUpdate.getPlayerId()).orElse(null);
-        if (player != null) {
+        System.out.println("Testing to see playerId: [" + movementUpdate.getPlayerId() + "]");
+        long now = System.currentTimeMillis();
+        Long lastSaved = lastSavedTimestamps.get(movementUpdate.getPlayerId());
+
+        // Skip if last save was too recent
+        if (lastSaved != null && (now - lastSaved) < SAVE_INTERVAL_MS) {
+            return;
+        }
+
+        // Fetch the player from the repository (now correctly returns id)
+        Optional<Player> optionalPlayer = playerRepository.findPlayerById(movementUpdate.getPlayerId());
+
+        if (optionalPlayer.isPresent()) {
+            Player player = optionalPlayer.get();
+
+            // Update the position locally
             player.setPositionX(movementUpdate.getPlayerPositionX());
             player.setPositionY(movementUpdate.getPlayerPositionY());
-            System.out.println("Updated position for player " + player.getUsername() + " x: " + player.getPositionX() + ", y: " + player.getPositionY());
+
+            // Persist the new position
+            Optional<Player> updatedPlayer = playerRepository.updatePlayerPosition(player.getId(), player);
+
+            if (updatedPlayer.isPresent()) {
+                // Successfully updated
+                lastSavedTimestamps.put(movementUpdate.getPlayerId(), now);
+                player = updatedPlayer.get(); // get the latest record
+                System.out.println("Saved position for player " + player.getUsername() +
+                        " with id: " + player.getId() +
+                        " x:" + player.getPositionX() +
+                        ", y:" + player.getPositionY());
+            } else {
+                System.out.println("Update failed or player not found: " + movementUpdate.getPlayerId());
+            }
         } else {
             System.out.println("Player with ID " + movementUpdate.getPlayerId() + " not found.");
         }

@@ -13,7 +13,7 @@ public interface PlayerRepository {
     Optional<Player> findPlayerById(long playerId);
     Optional<Player> createPlayer(Player player);
     void deletePlayer(long playerId);
-    Optional<Player> updatePlayer(long playerId,Player player);
+    Optional<Player> updatePlayerPosition(long playerId, Player player);
 
     // Methods regarding multiple players:
     List<Player> getAllPlayers();

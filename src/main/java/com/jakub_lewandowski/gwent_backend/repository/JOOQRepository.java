@@ -44,14 +44,15 @@ public class JOOQRepository implements PlayerRepository {
 
     @Override
     public Optional<Player> findPlayerById(long playerId) {
-        var existingPlayer = context.select()
-                .from(PLAYERS)
+        PlayersRecord record = context.selectFrom(PLAYERS)
                 .where(PLAYERS.ID.eq(playerId))
                 .fetchOne();
 
-        assert existingPlayer != null;
-        Player player = mapRecordToPlayer((PlayersRecord) existingPlayer);
-        return Optional.of(player);
+        if (record == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(mapRecordToPlayer(record));
     }
 
     @Override
@@ -93,9 +94,21 @@ public class JOOQRepository implements PlayerRepository {
     }
 
     @Override
-    public Optional<Player> updatePlayer(long playerId, Player player) {
-        return null;
+    public Optional<Player> updatePlayerPosition(long playerId, Player player) {
+        PlayersRecord updatedRecord = context.update(PLAYERS)
+                .set(PLAYERS.X_POS, player.getPositionX())
+                .set(PLAYERS.Y_POS, player.getPositionY())
+                .where(PLAYERS.ID.eq(playerId))
+                .returning()
+                .fetchOne();
+
+        if (updatedRecord != null) {
+            return Optional.of(mapRecordToPlayer(updatedRecord));
+        }
+
+        return Optional.empty();
     }
+
 
     @Override
     public void deleteAllPlayer() {
