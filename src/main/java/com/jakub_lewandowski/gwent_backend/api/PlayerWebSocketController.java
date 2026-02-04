@@ -2,6 +2,7 @@ package com.jakub_lewandowski.gwent_backend.api;
 
 import com.jakub_lewandowski.gwent_backend.model.ChatMessage;
 import com.jakub_lewandowski.gwent_backend.model.MovementUpdate;
+import com.jakub_lewandowski.gwent_backend.model.Player;
 import com.jakub_lewandowski.gwent_backend.model.PlayerDisconnectMessage;
 import com.jakub_lewandowski.gwent_backend.service.PlayerService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -44,6 +45,9 @@ public class PlayerWebSocketController {
                     "action", "disconnect",
                     "playerId", playerId
             ));
+
+            messagingTemplate.convertAndSend("/topic/chat",
+                    new ChatMessage(null, "A player has left!"));
         } catch (NumberFormatException e) {
             System.err.println("PlayerWebSocketController: Invalid player ID format: " + message.getPlayerId());
         } catch (Exception e) {
@@ -54,8 +58,6 @@ public class PlayerWebSocketController {
     @MessageMapping("/chat")
     @SendTo("/topic/chat")
     public ChatMessage handleChatMessage(@Payload ChatMessage chatMessage) {
-        // Format message as "username: message"
-        String formatted = chatMessage.getPlayerUsername() + ": " + chatMessage.getPlayerMessage();
-        return new ChatMessage(null, formatted); // username=null, message=formatted
+        return chatMessage;
     }
 }

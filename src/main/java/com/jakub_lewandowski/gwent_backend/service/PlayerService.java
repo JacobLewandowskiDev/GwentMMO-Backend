@@ -1,13 +1,11 @@
 package com.jakub_lewandowski.gwent_backend.service;
 
-import com.jakub_lewandowski.gwent_backend.model.MovementUpdate;
-import com.jakub_lewandowski.gwent_backend.model.Player;
-import com.jakub_lewandowski.gwent_backend.model.ValidationException;
-import com.jakub_lewandowski.gwent_backend.model.WebSocketEventListener;
+import com.jakub_lewandowski.gwent_backend.model.*;
 import com.jakub_lewandowski.gwent_backend.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +22,12 @@ public class PlayerService {
 
     private final Map<Long, Long> lastSavedTimestamps = new ConcurrentHashMap<>();
     private final long SAVE_INTERVAL_MS = 2000; // save at most once every 5 seconds
+    private final SimpMessageSendingOperations messagingTemplate;
 
-    public PlayerService(PlayerRepository playerRepository) {
+
+    public PlayerService(PlayerRepository playerRepository, SimpMessageSendingOperations messagingTemplate) {
         this.playerRepository = playerRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     public ResponseEntity<?> createPlayer(Player player) {
@@ -35,6 +36,8 @@ public class PlayerService {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Connection rejected: The Server has reached the Maximum active player count.");
         }
         try{
+            messagingTemplate.convertAndSend("/topic/chat",
+                    new ChatMessage(null, "Player " + player.getUsername() + " joined the server"));
             return ResponseEntity.status(HttpStatus.CREATED).body(playerRepository.createPlayer(player));
         } catch (ValidationException e) {
             System.out.println("Error occurred while creating a new Player: [" + e.getMessage() + "]");
