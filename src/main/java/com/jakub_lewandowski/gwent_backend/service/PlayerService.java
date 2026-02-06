@@ -21,7 +21,7 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
 
     private final Map<Long, Long> lastSavedTimestamps = new ConcurrentHashMap<>();
-    private final long SAVE_INTERVAL_MS = 2000; // save at most once every 5 seconds
+    private final long SAVE_INTERVAL_MS = 2000; // save at most once every 2 seconds
     private final SimpMessageSendingOperations messagingTemplate;
 
 
@@ -32,13 +32,22 @@ public class PlayerService {
 
     public ResponseEntity<?> createPlayer(Player player) {
         System.out.println("createPlayer() method called.");
+
         if(WebSocketEventListener.currentPlayerCount()) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Connection rejected: The Server has reached the Maximum active player count.");
         }
-        try{
-            messagingTemplate.convertAndSend("/topic/chat",
-                    new ChatMessage(null, "Player " + player.getUsername() + " joined the server"));
-            return ResponseEntity.status(HttpStatus.CREATED).body(playerRepository.createPlayer(player));
+
+        try {
+            Optional<Player> createdPlayer = playerRepository.createPlayer(player);
+
+            if (createdPlayer.isPresent()) {
+                messagingTemplate.convertAndSend("/topic/chat",
+                        new ChatMessage(null, "Player " + createdPlayer.get().getUsername() + " joined the server"));
+                return ResponseEntity.status(HttpStatus.CREATED).body(createdPlayer.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Failed to create player");
+            }
+
         } catch (ValidationException e) {
             System.out.println("Error occurred while creating a new Player: [" + e.getMessage() + "]");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
