@@ -41,16 +41,25 @@ public class GameController {
     public ResponseEntity<?> createPlayer(@RequestBody Player player) {
         ResponseEntity<?> response = playerService.createPlayer(player);
 
-        if (response.getStatusCode() == HttpStatus.CREATED && response.getBody() instanceof Optional<?> optionalBody) {
+        if (response.getStatusCode() == HttpStatus.CREATED && response.getBody() != null) {
+            Object body = response.getBody();
+            Player createdPlayer = null;
 
-            if (optionalBody.isPresent() && optionalBody.get() instanceof Player createdPlayer) {
+            if (body instanceof Optional<?> optionalBody && optionalBody.isPresent() && optionalBody.get() instanceof Player p) {
+                createdPlayer = p;
+            } else if (body instanceof Player p) {
+                createdPlayer = p;
+            }
+
+            if (createdPlayer != null) {
                 Map<String, Object> payload = new HashMap<>();
-                payload.put("type", "connect");
-                payload.put("player", createdPlayer);
+                payload.put("playerId", createdPlayer.getId());
+                payload.put("username", createdPlayer.getUsername());
+                payload.put("sprite", createdPlayer.getSprite());
+                payload.put("positionX", createdPlayer.getPositionX());
+                payload.put("positionY", createdPlayer.getPositionY());
 
                 messagingTemplate.convertAndSend("/topic/player-updates", payload);
-            } else {
-                System.out.println("Optional is empty or does not contain a Player");
             }
         }
         return response;
