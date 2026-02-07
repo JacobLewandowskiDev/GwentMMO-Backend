@@ -62,7 +62,7 @@ public class JOOQRepository implements PlayerRepository {
                 .where(PLAYERS.USERNAME.equalIgnoreCase(player.getUsername()))
                 .fetchOne();
         if (playerExists != null) {
-            throw new ValidationException("Status code:" + HttpStatus.CONFLICT.value() + ", Player under the username: '" + player.getUsername() + "' Already exists.");
+            throw new ValidationException("Status code: [" + HttpStatus.CONFLICT.value() + "] - Player under the username: '" + player.getUsername() + "' already exists.");
         }
         Player newPlayer = new Player(player.getUsername(), player.getSprite());
 
@@ -78,6 +78,7 @@ public class JOOQRepository implements PlayerRepository {
 
         if (playerRecord != null) {
             Player createdPlayer = mapRecordToPlayer(playerRecord);
+            System.out.println("Status code: [" + HttpStatus.CREATED.value() + "] - New player has been created successfully.");
             return Optional.of(createdPlayer);
         } else {
             throw new IllegalStateException("Failed to create player");
@@ -90,7 +91,7 @@ public class JOOQRepository implements PlayerRepository {
         context.deleteFrom(PLAYERS)
                 .where(PLAYERS.ID.eq(playerId))
                 .execute();
-        System.out.println("Player [" + playerId + "] was deleted from the DB.");
+        System.out.println("Status code: [" + HttpStatus.CREATED.value() + "] - Player [" + playerId + "] was deleted from the DataBase.");
     }
 
     @Override
@@ -109,13 +110,11 @@ public class JOOQRepository implements PlayerRepository {
         return Optional.empty();
     }
 
-
     @Override
     public void deleteAllPlayer() {
         context.deleteFrom(PLAYERS).execute();
-        System.out.println("Player table cleared.");
+        System.out.println("Player table has been cleared.");
     }
-
 
     private Player mapRecordToPlayer(PlayersRecord playersRecord) {
         return new Player(

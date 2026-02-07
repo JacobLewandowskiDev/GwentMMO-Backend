@@ -21,7 +21,7 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
 
     private final Map<Long, Long> lastSavedTimestamps = new ConcurrentHashMap<>();
-    private final long SAVE_INTERVAL_MS = 2000; // save at most once every 2 seconds
+    private final long SAVE_INTERVAL_MS = 2000; // save at most once every 2 seconds to DB
     private final SimpMessageSendingOperations messagingTemplate;
 
 
@@ -42,7 +42,7 @@ public class PlayerService {
 
             if (createdPlayer.isPresent()) {
                 messagingTemplate.convertAndSend("/topic/chat",
-                        new ChatMessage(null, "Player " + createdPlayer.get().getUsername() + " joined the server"));
+                        new ChatMessage(null, "Player: " + createdPlayer.get().getUsername() + " has joined the server"));
                 return ResponseEntity.status(HttpStatus.CREATED).body(createdPlayer.get());
             } else {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Failed to create player");
@@ -55,7 +55,7 @@ public class PlayerService {
     }
 
     public Optional<Player> getPlayerById(long playerId) {
-        System.out.println("getPlayerById() method called for: [" + playerId + "]");
+        System.out.println("getPlayerById() method called for player ID: [" + playerId + "]");
         return playerRepository.findPlayerById(playerId);
     }
 
@@ -65,7 +65,7 @@ public class PlayerService {
     }
 
     public void deletePlayer(long playerId) {
-        System.out.println("deletePlayer() method called for: [" + playerId + "]");
+        System.out.println("deletePlayer() method called for player ID: [" + playerId + "]");
         playerRepository.deletePlayer(playerId);
     }
 
@@ -91,15 +91,15 @@ public class PlayerService {
             if (updatedPlayer.isPresent()) {
                 lastSavedTimestamps.put(movementUpdate.getPlayerId(), now);
                 player = updatedPlayer.get(); // get the latest record
-                System.out.println("Saved position for player " + player.getUsername() +
-                        " with id: " + player.getId() +
-                        " x:" + player.getPositionX() +
+                System.out.println("Updated the position for player " + player.getUsername() +
+                        " with ID: [" + player.getId() +
+                        "], x:" + player.getPositionX() +
                         ", y:" + player.getPositionY());
             } else {
-                System.out.println("Update failed or player not found: " + movementUpdate.getPlayerId());
+                System.out.println("Update failed for player with ID: [" + movementUpdate.getPlayerId() + "]");
             }
         } else {
-            System.out.println("Player with ID " + movementUpdate.getPlayerId() + " not found.");
+            System.out.println("Player with ID: [" + movementUpdate.getPlayerId() + "] not found.");
         }
     }
 }

@@ -24,7 +24,7 @@ public class WebSocketEventListener {
 
         if (playerId != null && activeSessions.size() < MAX_CONNECTIONS) {
             activeSessions.put(sessionId, playerId);
-            System.out.println("Player with id: [" + playerId + "] has joined the server. Server status: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
+            System.out.println("Player with ID: [" + playerId + "] has joined the server. Server status: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
         }
     }
 
@@ -34,7 +34,7 @@ public class WebSocketEventListener {
         String playerId = activeSessions.remove(sessionId);
 
         if (playerId != null) {
-            System.out.println("Player with id: [" + playerId + "] has disconnected from the server. Server status: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
+            System.out.println("Player with ID: [" + playerId + "] has disconnected from the server. Server status: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
         }
     }
 
