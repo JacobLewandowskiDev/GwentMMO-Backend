@@ -93,3 +93,9 @@ yarn-error.log
 # Windows specific ignores
 Thumbs.db
 ehthumbs.db
+
+# Docker and secrets
+.env
+docker-compose.yml
+docker-compose.override.yml
+secrets.properties

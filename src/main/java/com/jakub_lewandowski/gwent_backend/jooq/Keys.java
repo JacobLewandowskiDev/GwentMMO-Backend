@@ -13,13 +13,16 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
 
-
+/**
+ * A class modelling foreign key relationships and constraints of tables in
+ * public.
+ */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Keys {
 
-    public static final UniqueKey<PlayersRecord> PLAYERS_PKEY =
-            Internal.createUniqueKey(Players.PLAYERS,
-            DSL.name("players_pkey"),
-            new TableField[] { Players.PLAYERS.ID },
-    true);
+    // -------------------------------------------------------------------------
+    // UNIQUE and PRIMARY KEY definitions
+    // -------------------------------------------------------------------------
+
+    public static final UniqueKey<PlayersRecord> PLAYERS_PKEY = Internal.createUniqueKey(Players.PLAYERS, DSL.name("players_pkey"), new TableField[] { Players.PLAYERS.ID }, true);
 }

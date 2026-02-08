@@ -139,6 +139,6 @@
 
             </plugin>
         </plugins>
-        <finalName>GwentBackend-app</finalName>
+        <finalName>gwent-app</finalName>
     </build>
 </project>
