@@ -53,9 +53,9 @@ public class WebSocketEventListener {
                         "playerId", playerId
                 ));
 
-                System.out.println("Cleaned up Ghost Player: [" + playerId + "]. Current connections: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
+                System.out.println("Player: [" + playerId + "] has disconnected. Current connections: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
             } catch (Exception e) {
-                System.err.println("Error cleaning up player " + playerIdStr + ": " + e.getMessage());
+                System.err.println("Error removing player: " + playerIdStr + ": " + e.getMessage());
             }
         }
     }
