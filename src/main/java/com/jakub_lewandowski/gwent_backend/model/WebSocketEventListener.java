@@ -1,6 +1,8 @@
 package com.jakub_lewandowski.gwent_backend.model;
 
+import com.jakub_lewandowski.gwent_backend.service.PlayerService;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
@@ -14,6 +16,13 @@ public class WebSocketEventListener {
 
     private static final Map<String, String> activeSessions = new ConcurrentHashMap<>();
     private static final int MAX_CONNECTIONS = 10;
+    private final PlayerService playerService;
+    private final SimpMessageSendingOperations messagingTemplate;
+
+    public WebSocketEventListener(PlayerService playerService, SimpMessageSendingOperations messagingTemplate) {
+        this.playerService = playerService;
+        this.messagingTemplate = messagingTemplate;
+    }
 
 
     @EventListener
@@ -31,10 +40,23 @@ public class WebSocketEventListener {
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         String sessionId = event.getSessionId();
-        String playerId = activeSessions.remove(sessionId);
+        String playerIdStr = activeSessions.remove(sessionId);
 
-        if (playerId != null) {
-            System.out.println("Player with ID: [" + playerId + "] has disconnected from the server. Server status: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
+        if (playerIdStr != null) {
+            try {
+                long playerId = Long.parseLong(playerIdStr);
+
+                playerService.deletePlayer(playerId);
+
+                messagingTemplate.convertAndSend("/topic/player-disconnect", Map.of(
+                        "action", "disconnect",
+                        "playerId", playerId
+                ));
+
+                System.out.println("Cleaned up Ghost Player: [" + playerId + "]. Current connections: [" + activeSessions.size() + "/" + MAX_CONNECTIONS + "].");
+            } catch (Exception e) {
+                System.err.println("Error cleaning up player " + playerIdStr + ": " + e.getMessage());
+            }
         }
     }
 
